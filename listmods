@@ -1,0 +1,151 @@
+#!/usr/bin/env python3
+# 
+# SPDX-License-Identifier: GPL-2.0
+# listmods versie 1.1
+#
+# God wat een goed leesbaar script is het geworden! Dank U!
+# Vrolijk even consistent spaties gebruikt na wat terechte aanwijzingen van de interpreter.
+# Wat is een systeem nou met veel onnodige modules geladen? 
+# Met tooltjes kijken welke modules er geladen zijn, vrolijk erachterkomen dat er bij een aantal 
+# modules gewoon ook essentiele informatie ontbreekt.
+# Zal wel goed zijn, zo'n module zonder info, of 15 modules voor 1 geluidskaartje.
+# 
+# Ja, Jezus nou je het zegt, heel onduidelijk vind ik de /usr/bin/lsmod output, je ziet wel welke modules
+# geladen zijn, en hun depends, maar voor meer info zal je /sbin/modinfo "module" doen.
+#
+# Nu met dit script zie je meteen owJeetje dat zijn geluidskaart modules die a l l e m a a l geladen moeten zijn.
+# Je kan vaak zonder resultaat rmmodden wal je wil.
+# Modules zijn dan gewoon .. "busy" .. als zij geen depends hebben om naar te wijzen. 
+#
+# Om te zorgen dat modules niet geladen worden tijdens het initiele opstarten heb je de file: 
+# /lib/modprobe.d/dist-blacklist.conf. En sommige modules worden ondanks dat soms toch geladen.
+# met deze oneliner deactiveer je bijvoorbeeld alle sound modules:
+#
+# for i in `./listmods | grep sound  | awk '{print $2}' | sed s/[\(\'\)]//g | sort | uniq` ; do echo "blacklist "$i >/etc/modprobe.d/blacklist-sound.conf; done
+#
+# Of modules zoals dit fantasie voorbeeld:
+#       blacklist nederlandse_wet_staat_rootkits_op_werknemers_apparatuur_toe_module 
+#
+# Het duurde weer een paar jaar voordat ik zelf tevreden was, hiervoor heb ik veel in Perl gehannest, 
+# maar nu in python3.5 is het gelukt.
+# 
+# Het begon allemaal met een uit de hand gelopen oneliner:
+# 
+# for i in `lsmod|awk '{print $1}'` ; do echo $i ; /sbin/modinfo $i | egrep '^description|^filename'; done
+# 
+# Maar dan heb je niet al je depends en voor elke depends ook de info op een rijtje. Nu met dit script wel.
+#
+# Usage: ./listmods
+#
+# Even voor de duidelijkheid dit is een studie scriptje van mij en vrolijk zien God en Jezus toch alles wat je doet.
+# Dus heel parra achter de computer hoeft nou ook weer niet.  
+# 
+
+
+import os, sys, re
+import subprocess
+import pathlib
+#import argparse
+
+#a = argparse.ArgumentParser()
+version="1.1"
+
+def listmodinfo(i):
+
+    ouput3 = []
+    module2 = i
+    cmd = [ "/usr/sbin/modinfo", module2 ]
+    ouput = subprocess.check_output(cmd)
+    ouput2 = ouput.decode().split("\n")
+
+    pattern1 = re.compile("^description")
+    pattern2 = re.compile("^filename")
+
+    result = []
+    tresult = dict()
+    for item in ouput2:
+        if pattern1.search(item):
+            tempin = item.split(":")
+            tresult['tr'] = tempin[1]
+            #result.append(tempin[1].strip())
+            result.append(tresult['tr'].strip())
+            #print(result)
+
+        if pattern2.search(item):
+            tempin = item.split(":")
+
+            filepath = tempin[1].strip()
+
+            pathparts = []
+            p = pathlib.PurePath(filepath)
+            pathparts = p.parts
+
+            lenval = len(pathparts) 
+            p2 = []
+            for i in range(4,lenval):
+                p2.append(pathparts[i]) 
+
+            p2string = "/".join(p2)
+            result.append(p2string) 
+
+    result.reverse()
+    p3string = " -> ".join(result)
+    #return(module2,"->",p3string)
+    return(module2,p3string)
+
+
+procmodules = open("/proc/modules", 'r') 
+
+cnt = 0 
+blacklistarray = []
+
+for i in procmodules:
+    
+    cnt += 1
+
+    try:
+        (module,memused,modused,depends,live,pointer) = i.split()
+    except ValueError:
+        (module,memused,modused,depends,live,pointer,rest) = i.split()
+
+    modinf = listmodinfo(module)
+    print(cnt,"('" + modinf[0] + "')", "('" + modinf[1] + "')")
+
+   
+    blacklistarray.append([cnt,module])
+    if depends != '-':
+        inp = depends.split(',')
+        cnt2 = 0
+        for i in inp:
+            cnt2 += 1
+            if i != '':
+                #blacklistarray.append([cnt,module,i])
+                blacklistarray.append([cnt,i])
+                resultdep = listmodinfo(i)
+                print("   " + str(cnt) + "." + str(cnt2) + " ('" + resultdep[0] + "')",resultdep[1])
+
+#print(blacklistarray)
+
+def createblacklist():
+    cntr = -1 
+ 
+    a = input('number-->')
+    if a:
+        #for i in range(0,len(blacklistarray)):
+            #b = i + 1
+            #print("Ja", i)
+            #print("Ja2", blacklistarray[i][0])
+        for i in blacklistarray:
+            cntr += 1
+            #print(a,i[0],cntr)
+            #if a == blacklistarray[cntr][0]:
+            if int(a) == int(i[0]):
+                #print("Ja",cntr,int(i[0]))
+                #print(a,cntr)
+                #print(blacklistarray[cntr][int(i[0])])
+                b = i[0]
+                #print(blacklistarray[cntr][b])
+                print(blacklistarray[cntr][0], "blacklist " + blacklistarray[cntr][1])
+
+#createblacklist()
+
