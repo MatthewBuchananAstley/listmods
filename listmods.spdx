@@ -1,0 +1,61 @@
+SPDXVersion: SPDX-2.2
+DataLicense: CC0-1.0
+SPDXID: SPDXRef-DOCUMENT
+DocumentName: listmods.spdx
+DocumentNamespace: https://github.com/MatthewBuchananAstley/listmods.git
+Creator: Person: Matthew Buchanan Astley (matthewbuchanan@astley.nl)
+Created: 2022-02-15T21:36:19Z
+CreatorComment: listmods spdx file
+
+#
+#
+
+PackageName: listmods
+SPDXID: SPDXRef-MatthewBuchananAstley-Package-listmods
+PackageVersion: 1.1
+PackageVerificationCode: 93767973a40c80ec6151e0e2a49c400a80cd2c7a (./listmods.spdx excluded )
+PackageLicenseDeclared: GPL-3.0-or-later
+PackageLicenseInfoFromFiles: LicenseRef-GPL-3.0-or-later
+PackageLicenseConcluded: LicenseRef-GPL-3.0-or-later
+PackageCopyrightText: <text> 2019 - 2022 Matthew Buchanan Astley (matthewbuchanan@astley.nl) </text>
+PackageDownloadLocation: https://github.com/MatthewBuchananAstley/listmods.git
+
+#
+#
+#
+
+FileName: ./README.md
+SPDXID: SPDXRef-README.md
+FileType: TEXT
+FileChecksum: SHA256: 98768672c9398768d0ad62ec14c0b9faef85799837791da4ed7ede6191293135
+FileChecksum: SHA1: e39e3438ceebdeba70bd7957f68044f37f0de402
+FileCopyrightText: <text> 2019 - 2022 Matthew Buchanan Astley (matthewbuchanan@astley.nl) </text>
+LicenseInfoInFile: NOASSERTION
+LicenseConcluded: NOASSERTION
+
+#
+#
+#
+
+FileName: ./CHANGELOG
+SPDXID: SPDXRef-CHANGELOG
+FileType: TEXT
+FileChecksum: SHA256: a767b1f60d54b8f4fd6f9d8911600eb868cd00b14223ef342cf74d146251ebd6
+FileChecksum: SHA1: a747daf4f08349dc38b78a2cb4290175d668219b
+FileCopyrightText: NOASSERTION
+LicenseInfoInFile: NOASSERTION
+LicenseConcluded: NOASSERTION
+
+#
+#
+#
+
+FileName: ./listmods
+SPDXID: SPDXRef-listmods
+FileType: APPLICATION
+FileChecksum: SHA256: 9ca944591d56037dd7df1ef3604001a084ea0421ad553fff46603046371b68ff
+FileChecksum: SHA1: 54af3ffcf841d91a993845c1938b004bc8b71222
+FileCopyrightText: <text> 2019 - 2022 Matthew Buchanan Astley (matthewbuchanan@astley.nl) </text>
+LicenseInfoInFile: GPL-3.0-or-later
+LicenseConcluded: GPL-3.0-or-later
+

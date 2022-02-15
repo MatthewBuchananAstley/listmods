@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # 
-# SPDX-License-Identifier: GPL-2.0
-# listmods versie 1.1
+# SPDX-License-Identifier: GPL-3.0-or-later
+# PackageVersion: 1.1
 #
 # God wat een goed leesbaar script is het geworden! Dank U!
 # Vrolijk even consistent spaties gebruikt na wat terechte aanwijzingen van de interpreter.
@@ -40,6 +40,7 @@
 # Even voor de duidelijkheid dit is een studie scriptje van mij en vrolijk zien God en Jezus toch alles wat je doet.
 # Dus heel parra achter de computer hoeft nou ook weer niet.  
 # 
+# FileCopyrightText: <text> 2019 - 2022 Matthew Buchanan Astley (matthewbuchanan@astley.nl) </text>
 
 
 import os, sys, re
